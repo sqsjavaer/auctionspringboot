@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper   namespace ="com.baizhi.ssm.dao.UserDao">
+           <select id="selectOneByNameAndPwd"  resultType="User">
+          			select * from auction_user where user_name=#{user_name} and user_password=#{user_password}
+          </select>
+          
+          <insert id="insertOne">
+                  insert into auction_user values(
+                  user_seq.nextval,#{user_name},
+                  #{user_password},#{user_card_no},
+                  #{user_tel},
+                  <choose>
+                  		<when test="user_address!=null"> #{user_address}</when>
+                  		<otherwise>' '</otherwise>
+                  </choose> ,
+                  <choose>
+                  		<when test="user_post_number!=null"> #{user_post_number}</when>
+                  		<otherwise>' '</otherwise>
+                  </choose>, 0,null,null)
+          </insert>
+</mapper>

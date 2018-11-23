@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper   namespace ="com.baizhi.ssm.dao.AuctionDao">
+       
+       <resultMap type="Record" id="aucMap">
+                        <result column="a_id"  property="auction_id" />  
+                        <result column="id"  property="id" />  
+                        <result column="atime"  property="auction_time" />  
+                        <result column="aprice"  property="auction_price" />  
+                             <association property="user"  javaType="User">
+                             	    <result column="user_id"  property="user_id" />
+                             	    <result column="user_name"  property="user_name" />
+                             </association>                 
+       </resultMap>
+          <select id="getOne"  resultMap="aucMap">
+           select 
+             e2.id,e2.auction_id aid,e2.auction_time atime,e2.auction_price aprice,
+             e3.user_id,e3.user_name
+            from 
+            auction_record e2
+            inner join auction_user e3 
+             on e2.user_id = e3.user_id 
+            where e2.auction_id=#{id} 
+              order by e2.auction_price desc 
+          
+          
+          </select>
+          <select id="getAll" resultType="Auction"> 
+           			select * from auction 
+                           <where>
+           					<if test="auction != null and auction.auction_name !=null  and auction.auction_name !='' ">
+           						auction_name  like  '%'||#{auction.auction_name}||'%'
+           					</if>
+           					<if test="auction != null and auction.auction_desc !=null  and auction.auction_desc !='' ">
+           						and auction_desc like '%'||#{auction.auction_desc}||'%'
+           					</if>
+           					<if test="auction != null and auction.auction_start_time !=null and auction.auction_start_time !=''">
+           						and auction_start_time  &gt;=#{auction.auction_start_time}
+           					</if>
+           					<if test="auction != null  and auction.auction_end_time !=null  and auction.auction_end_time !=''">
+           						and auction_end_time  &lt;=#{auction.auction_end_time}
+           					</if>
+           					<if test="auction != null  and auction.auction_start_price !=null  and auction.auction_start_price !=''">
+           						 and auction_start_price  &gt;=#{auction.auction_start_price}
+           					</if>
+           					and state=0
+           			</where>
+          </select>
+          
+          <select id="selectOneById"  resultType="Auction" >
+              		 select * from auction  where auction_id=#{id}
+          </select>
+          
+          <delete id="deleteById">          		   
+          		    update auction set state=1 where auction_id=#{id}
+          </delete>
+          
+         <update id="update">
+                     update auction
+					   set auction_name        =#{auction_name},
+					        auction_start_price =#{auction_start_price},
+					        auction_upset       =#{auction_upset},
+					        auction_start_time  =#{auction_start_time},
+					        auction_end_time    =#{auction_end_time},
+					        auction_pic         =#{auction_pic},
+					        auction_desc        =#{auction_desc}
+					  where auction_id =#{auction_id}  
+         </update>
+         
+         <insert id="insertOne">
+                  insert into auction values(
+                     auction_seq.nextval,#{auction_name},#{auction_start_price},#{auction_upset},#{auction_start_time},
+                     #{auction_end_time},#{auction_pic},#{auction_desc},0
+                  )
+         </insert>
+         
+</mapper>
