@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -27,10 +28,10 @@ public class AuctionController {
     private AuctionService auctionService;
 
     @RequestMapping("/getAll")
-    public String getAllAuction(Auction auction,Map map, Integer pageNum, Integer pageSize) {
-        if (pageNum == null) {
+    public String getAllAuction(Auction auction, Map map, @RequestParam(defaultValue = "1")  Integer pageNum, Integer pageSize) {
+        /*if (pageNum == null) {
             pageNum = 1;
-        }
+        }*/
         if (pageSize == null) {
             pageSize = 5;
         }

@@ -16,25 +16,9 @@
             }
         }
 
-        function toPrePage() {
+        function toPage(pageNum) {
             var obj = document.getElementById("myForm");
             var inputObj = document.getElementById("pageNum");
-            var pageNum = inputObj.value;
-            //console.log(pageNum);
-            pageNum = parseInt(pageNum) - 1;
-            //console.log(pageNum);
-            inputObj.value = pageNum;
-            obj.action = "${pageContext.request.contextPath}/getAll.do";
-            obj.submit();
-        }
-
-        function toNextPage(){
-            var obj = document.getElementById("myForm");
-            var inputObj = document.getElementById("pageNum");
-            var pageNum = inputObj.value;
-           // console.log(pageNum);
-            pageNum = parseInt(pageNum) + 1;
-           // console.log(pageNum);
             inputObj.value = pageNum;
             obj.action = "${pageContext.request.contextPath}/getAll.do";
             obj.submit();
@@ -105,23 +89,23 @@
             </c:forEach>
 
             <div class="page">
-                <a href="${pageContext.request.contextPath}/getAll.do" title="">首页</a>
+                <a href="javascript:void(0)" title="" onclick="toPage(1)">首页</a>
                 <c:if test="${requestScope.pageInfo.pageNum > 1}">
-                    <a href="javascript:void(0)" title="" onclick="toPrePage()">上一页</a>
+                    <a href="javascript:void(0)" title="" onclick="toPage(${requestScope.pageInfo.pageNum-1})">上一页</a>
                 </c:if>
                 <c:if test="${requestScope.pageInfo.pageNum < requestScope.pageInfo.pages}">
                     <a href="javascript:void(0)"
-                       title="" onclick="toNextPage()">下一页</a>
+                       title="" onclick="toPage(${requestScope.pageInfo.pageNum+1})">下一页</a>
                 </c:if>
-                <a href="${pageContext.request.contextPath}/getAll.do?pageNum=${requestScope.pageInfo.pages}" title="">尾页</a>
+                <a href="javascript:void(0)" title="" onclick="toPage(${requestScope.pageInfo.pages})">尾页</a>
 
                 <form method="post" id="myForm">
-                    <input id="pageNum" name="pageNum" value="${requestScope.pageInfo.pageNum}" type="text"/>
-                    <input name="auction_name" value="${requestScope.auc.auction_name}" type="text"/>
-                    <input name="auction_desc" value="${requestScope.auc.auction_desc}" type="text"/>
-                    <input name="auction_start_time" value="${requestScope.auc.auction_start_time}" type="text"/>
-                    <input name="auction_end_time" value="${requestScope.auc.auction_end_time}" type="text"/>
-                    <input name="auction_start_price" value="${requestScope.auc.auction_start_price}" type="text"/>
+                    <input id="pageNum" name="pageNum" value="${requestScope.pageInfo.pageNum}" type="hidden"/>
+                    <input name="auction_name" value="${requestScope.auc.auction_name}" type="hidden"/>
+                    <input name="auction_desc" value="${requestScope.auc.auction_desc}" type="hidden"/>
+                    <input name="auction_start_time" value="${requestScope.auc.auction_start_time}" type="hidden"/>
+                    <input name="auction_end_time" value="${requestScope.auc.auction_end_time}" type="hidden"/>
+                    <input name="auction_start_price" value="${requestScope.auc.auction_start_price}" type="hidden"/>
                 </form>
 
             </div>
